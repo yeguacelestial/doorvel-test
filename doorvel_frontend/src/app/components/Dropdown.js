@@ -1,14 +1,56 @@
 "use client"
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Select from '@mui/material/Select';
 import MenuItem from '@mui/material/MenuItem';
 
+const apiResponse = {
+    "data": [
+        {
+            "id": 1,
+            "property_category_id": 1,
+            "name": "Estilo de vida",
+            "seo_friendly": "estilo-de-vida",
+            "active_record": true,
+            "created_at": "2022-04-15T18:32:29.939524",
+            "updated_at": "2022-04-15T18:32:29.939534",
+            "created_by": "Doorvel-TI"
+        },
+        {
+            "id": 2,
+            "property_category_id": 1,
+            "name": "Impacto ambiental",
+            "seo_friendly": "impacto-ambiental",
+            "active_record": true,
+            "created_at": "2022-04-15T18:35:46.426587",
+            "updated_at": "2022-04-15T18:35:46.426595",
+            "created_by": "Doorvel-TI"
+        }
+    ],
+    "date_recived": {}
+}
+
 const Dropdown = () => {
     const [selectedOption, setSelectedOption] = useState('');
+    const [options, setOptions] = useState(null);
 
     const handleChange = (event) => {
         setSelectedOption(event.target.value);
     };
+
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const response = await fetch('http://54.215.118.180:81/api/cat-amenities-parents/');
+                const jsonData = await response.json();
+                console.log(jsonData)
+                setData(jsonData);
+            } catch (error) {
+                console.log('Error fetching data:', error);
+            }
+        };
+
+        fetchData();
+    }, []);
 
     return (
         <Select
@@ -27,9 +69,11 @@ const Dropdown = () => {
             }}>
                 Selecciona una amenidad
             </MenuItem>
-            <MenuItem value="option1">Option 1</MenuItem>
-            <MenuItem value="option2">Option 2</MenuItem>
-            <MenuItem value="option3">Option 3</MenuItem>
+            {apiResponse.data.map((item) => (
+                <MenuItem key={item.id} value={item.name}>
+                    {item.name}
+                </MenuItem>
+            ))}
         </Select>
     );
 };
