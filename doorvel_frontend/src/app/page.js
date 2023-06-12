@@ -1,13 +1,6 @@
-import Dropdown from './components/Dropdown';
-import Navbar from './components/Navbar'
-import Cards from './components/Cards'
+"use client"
+import Home from './components/Home';
 
-export default function Home() {
-    return (
-        <>
-            <Navbar />
-            <Dropdown />
-            <Cards />
-        </>
-    );
+export default function Page() {
+    return <Home />
 }

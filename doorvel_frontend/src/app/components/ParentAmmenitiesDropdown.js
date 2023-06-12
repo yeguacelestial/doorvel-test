@@ -1,7 +1,9 @@
 "use client"
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useContext } from 'react';
 import Select from '@mui/material/Select';
 import MenuItem from '@mui/material/MenuItem';
+
+import { AmmenitiesContext } from './AmmenitiesContext';
 
 const apiResponse = {
     "data": [
@@ -29,12 +31,14 @@ const apiResponse = {
     "date_recived": {}
 }
 
-const Dropdown = () => {
-    const [selectedOption, setSelectedOption] = useState('');
-    const [options, setOptions] = useState(null);
+const ParentAmmenitiesDropdown = () => {
+    const [selectedParent, setSelectedParent] = useState('');
+    const [apiData, setApiData] = useState()
+
+    const { ammenitiesOptions, setAmmenitiesOptions } = useContext(AmmenitiesContext)
 
     const handleChange = (event) => {
-        setSelectedOption(event.target.value);
+        setSelectedParent(event.target.value);
     };
 
     useEffect(() => {
@@ -43,7 +47,7 @@ const Dropdown = () => {
                 const response = await fetch('http://54.215.118.180:81/api/cat-amenities-parents/');
                 const jsonData = await response.json();
                 console.log(jsonData)
-                setData(jsonData);
+                setApiData(jsonData);
             } catch (error) {
                 console.log('Error fetching data:', error);
             }
@@ -53,29 +57,31 @@ const Dropdown = () => {
     }, []);
 
     return (
-        <Select
-            value={selectedOption}
-            onChange={handleChange}
-            displayEmpty
-            sx={{
-                borderRadius: 5,
-                marginTop: "20px",
-                padding: '1px 10px',
-                // backgroundColor: '#FFE4C4',
-                width: "100%"
-            }}
-        >
-            <MenuItem value="" disabled sx={{
-            }}>
-                Selecciona una amenidad
-            </MenuItem>
-            {apiResponse.data.map((item) => (
-                <MenuItem key={item.id} value={item.name}>
-                    {item.name}
+        <AmmenitiesContext.Provider value={{ selectedParent }}>
+            <Select
+                value={selectedParent}
+                onChange={handleChange}
+                displayEmpty
+                sx={{
+                    borderRadius: 5,
+                    marginTop: "20px",
+                    padding: '1px 10px',
+                    // backgroundColor: '#FFE4C4',
+                    width: "100%"
+                }}
+            >
+                <MenuItem value="" disabled sx={{
+                }}>
+                    Selecciona una amenidad
                 </MenuItem>
-            ))}
-        </Select>
+                {apiResponse.data.map((item) => (
+                    <MenuItem key={item.id} value={item.name}>
+                        {item.name}
+                    </MenuItem>
+                ))}
+            </Select>
+        </AmmenitiesContext.Provider>
     );
 };
 
-export default Dropdown;
+export default ParentAmmenitiesDropdown;

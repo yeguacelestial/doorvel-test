@@ -1,4 +1,3 @@
-"use client"
 import Card from '@mui/material/Card';
 import CardMedia from '@mui/material/CardMedia';
 import CardContent from '@mui/material/CardContent';
@@ -14,7 +13,7 @@ const StyledCardMedia = styled(CardMedia)(({ theme }) => ({
     height: 200,
 }));
 
-const CardComponent = ({ imageSrc, title, onClick }) => {
+const ChildAmmenity = ({ imageSrc, title, onClick }) => {
     return (
         <div onClick={onClick}>
             <StyledCard>
@@ -27,4 +26,4 @@ const CardComponent = ({ imageSrc, title, onClick }) => {
     );
 };
 
-export default CardComponent;
+export default ChildAmmenity;
