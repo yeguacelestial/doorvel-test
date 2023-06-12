@@ -1,6 +1,7 @@
 "use client"
 import { useEffect, useState } from 'react';
 import Card from './Card';
+import FloatingCard from './FloatingCard';
 import Grid from '@mui/material/Grid';
 import CircularProgress from '@mui/material/CircularProgress';
 import { styled } from '@mui/system';
@@ -13,6 +14,10 @@ const LoadingContainer = styled(Grid)(({ theme }) => ({
 }));
 
 const Cards = () => {
+    const [openModal, setOpenModal] = useState(false);
+    const handleOpenModal = () => setOpenModal(true);
+
+    const [showFloatingCard, setShowFloatingCard] = useState(false);
     const [cards, setCards] = useState([]);
     const [isLoading, setIsLoading] = useState(false);
 
@@ -67,10 +72,18 @@ const Cards = () => {
             <Grid container spacing={1} columnSpacing={0.5}>
                 {cards.map((card, index) => (
                     <Grid key={index} item xs={12} sm={6} md={4}>
-                        <Card imageSrc={card.imageSrc} title={card.title} />
+                        <Card imageSrc={card.imageSrc} title={card.title} onClick={handleOpenModal} />
                     </Grid>
                 ))}
             </Grid>
+            {openModal && (
+                <FloatingCard
+                    title="Floating Card"
+                    content="This is the content of the floating card."
+                    open={openModal}
+                    setOpen={setOpenModal}
+                    handleOpen={handleOpenModal}
+                />)}
             {isLoading && (
                 <LoadingContainer>
                     <CircularProgress />

@@ -14,14 +14,16 @@ const StyledCardMedia = styled(CardMedia)(({ theme }) => ({
     height: 200,
 }));
 
-const CardComponent = ({ imageSrc, title }) => {
+const CardComponent = ({ imageSrc, title, onClick }) => {
     return (
-        <StyledCard>
-            <StyledCardMedia image={imageSrc} title={title} />
-            <CardContent>
-                <Typography variant="h6">{title}</Typography>
-            </CardContent>
-        </StyledCard>
+        <div onClick={onClick}>
+            <StyledCard>
+                <StyledCardMedia image={imageSrc} title={title} />
+                <CardContent>
+                    <Typography variant="h6">{title}</Typography>
+                </CardContent>
+            </StyledCard>
+        </div>
     );
 };
 
