@@ -15,11 +15,11 @@ const LoadingContainer = styled(Grid)(({ theme }) => ({
 
 const Cards = () => {
     const [openModal, setOpenModal] = useState(false);
-    const handleOpenModal = () => setOpenModal(true);
-
-    const [showFloatingCard, setShowFloatingCard] = useState(false);
     const [cards, setCards] = useState([]);
     const [isLoading, setIsLoading] = useState(false);
+    const [selectedCard, setSelectedCard] = useState({});
+
+    const handleOpenModal = () => setOpenModal(true);
 
     useEffect(() => {
         // Simulating API call or data fetch
@@ -27,18 +27,16 @@ const Cards = () => {
             setIsLoading(true);
             // Simulating a delay
             await new Promise((resolve) => setTimeout(resolve, 2000));
-            // Mock response data
             const mockData = [
-                { imageSrc: 'house.jpg', title: 'Card 1' },
-                { imageSrc: 'house.jpg', title: 'Card 2' },
-                { imageSrc: 'house.jpg', title: 'Card 3' },
-                { imageSrc: 'house.jpg', title: 'Card 4' },
-                { imageSrc: 'house.jpg', title: 'Card 5' },
-                { imageSrc: 'house.jpg', title: 'Card 6' },
-                { imageSrc: 'house.jpg', title: 'Card 7' },
-                { imageSrc: 'house.jpg', title: 'Card 8' },
-                { imageSrc: 'house.jpg', title: 'Card 9' },
-                // Add more data as needed
+                { imageSrc: 'house.jpg', title: 'Card 1', description: 'Description for card' },
+                { imageSrc: 'house.jpg', title: 'Card 2', description: 'Description for card' },
+                { imageSrc: 'house.jpg', title: 'Card 3', description: 'Description for card' },
+                { imageSrc: 'house.jpg', title: 'Card 4', description: 'Description for card' },
+                { imageSrc: 'house.jpg', title: 'Card 5', description: 'Description for card' },
+                { imageSrc: 'house.jpg', title: 'Card 6', description: 'Description for card' },
+                { imageSrc: 'house.jpg', title: 'Card 7', description: 'Description for card' },
+                { imageSrc: 'house.jpg', title: 'Card 8', description: 'Description for card' },
+                { imageSrc: 'house.jpg', title: 'Card 9', description: 'Description for card' },
             ];
             setCards((prevCards) => [...prevCards, ...mockData]);
             setIsLoading(false);
@@ -50,16 +48,19 @@ const Cards = () => {
     const handleScroll = (event) => {
         const { scrollTop, clientHeight, scrollHeight } = event.target;
         if (scrollHeight - scrollTop === clientHeight) {
-            // Reached the bottom of the scroll container, fetch more data here
-            // You can modify this logic to fetch more cards from an API endpoint
-            // For this example, we'll simulate loading more data after a delay
             setIsLoading(true);
             // Simulating a delay
             setTimeout(() => {
                 const newData = [
-                    { imageSrc: 'house.jpg', title: 'Card 10' },
-                    { imageSrc: 'house.jpg', title: 'Card 11' },
-                    { imageSrc: 'house.jpg', title: 'Card 12' },
+                    { imageSrc: 'house.jpg', title: 'Card 10', description: 'Description for card' },
+                    { imageSrc: 'house.jpg', title: 'Card 11', description: 'Description for card' },
+                    { imageSrc: 'house.jpg', title: 'Card 12', description: 'Description for card' },
+                    { imageSrc: 'house.jpg', title: 'Card 13', description: 'Description for card' },
+                    { imageSrc: 'house.jpg', title: 'Card 14', description: 'Description for card' },
+                    { imageSrc: 'house.jpg', title: 'Card 15', description: 'Description for card' },
+                    { imageSrc: 'house.jpg', title: 'Card 16', description: 'Description for card' },
+                    { imageSrc: 'house.jpg', title: 'Card 17', description: 'Description for card' },
+                    { imageSrc: 'house.jpg', title: 'Card 18', description: 'Description for card' },
                 ];
                 setCards((prevCards) => [...prevCards, ...newData]);
                 setIsLoading(false);
@@ -72,18 +73,21 @@ const Cards = () => {
             <Grid container spacing={1} columnSpacing={0.5}>
                 {cards.map((card, index) => (
                     <Grid key={index} item xs={12} sm={6} md={4}>
-                        <Card imageSrc={card.imageSrc} title={card.title} onClick={handleOpenModal} />
+                        <Card imageSrc={card.imageSrc} title={card.title} onClick={() => {
+                            handleOpenModal()
+                            setSelectedCard(card)
+                        }} />
                     </Grid>
                 ))}
             </Grid>
-            {openModal && (
-                <FloatingCard
-                    title="Floating Card"
-                    content="This is the content of the floating card."
-                    open={openModal}
-                    setOpen={setOpenModal}
-                    handleOpen={handleOpenModal}
-                />)}
+
+            <FloatingCard
+                title={selectedCard.title}
+                description={selectedCard.description}
+                open={openModal}
+                setOpen={setOpenModal}
+                handleOpen={handleOpenModal}
+            />
             {isLoading && (
                 <LoadingContainer>
                     <CircularProgress />

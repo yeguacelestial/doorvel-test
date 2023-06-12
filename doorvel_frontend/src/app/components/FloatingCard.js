@@ -1,6 +1,4 @@
-import { useState } from 'react';
 import Box from '@mui/material/Box';
-import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import Modal from '@mui/material/Modal';
 
@@ -13,14 +11,14 @@ const style = {
     bgcolor: 'background.paper',
     boxShadow: 24,
     p: 4,
+    outline: '0'
 };
 
-export default function FloatingCard({ title, content, open, setOpen, handleOpen }) {
+export default function FloatingCard({ title, description, open, setOpen }) {
     const handleClose = () => setOpen(false);
 
     return (
         <div>
-            <Button onClick={handleOpen}>Open modal</Button>
             <Modal
                 open={open}
                 onClose={handleClose}
@@ -29,10 +27,10 @@ export default function FloatingCard({ title, content, open, setOpen, handleOpen
             >
                 <Box sx={style}>
                     <Typography id="modal-modal-title" variant="h6" component="h2">
-                        Text in a modal
+                        {title}
                     </Typography>
                     <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-                        Duis mollis, est non commodo luctus, nisi erat porttitor ligula.
+                        {description}
                     </Typography>
                 </Box>
             </Modal>
