@@ -7,7 +7,7 @@ import CircularProgress from '@mui/material/CircularProgress';
 import { styled } from '@mui/system';
 
 import { AmmenitiesContext } from './AmmenitiesContext';
-import childrenAmmenities from '@/dummy/childrenAmmenities';
+import { childrenAmmenities } from '@/dummy/childrenAmmenities';
 
 const LoadingContainer = styled(Grid)(({ theme }) => ({
     display: 'flex',
@@ -18,13 +18,14 @@ const LoadingContainer = styled(Grid)(({ theme }) => ({
 
 const ChildrenAmmenitiesList = () => {
     const [openModal, setOpenModal] = useState(false);
-    const [cards, setCards] = useState([]);
+    const [cards, setCards] = useState(childrenAmmenities.results);
     const [isLoading, setIsLoading] = useState(false);
     const [selectedCard, setSelectedCard] = useState({});
 
     const { selectedParent } = useContext(AmmenitiesContext)
-    const { filteredCards, setFilteredCards } = useState(cards.filter(card => {
-        return card.property_category == selectedParent.id
+    const { filteredCards, setFilteredCards } = useState(childrenAmmenities.results.filter(card => {
+        // TODO: Fix filter
+        // return card.property_category == selectedParent.id
     }))
 
 
@@ -80,9 +81,9 @@ const ChildrenAmmenitiesList = () => {
     return (
         <div style={{ height: '78vh', overflowY: 'scroll', paddingTop: "50px", marginLeft: "8vw" }} onScroll={handleScroll}>
             <Grid container spacing={1} columnSpacing={0.5}>
-                {filteredCards.map((card, index) => (
+                {cards.map((card, index) => (
                     <Grid key={index} item xs={12} sm={6} md={4}>
-                        <ChildAmmenity imageSrc={card.imageSrc} title={card.title} onClick={() => {
+                        <ChildAmmenity imageSrc={"house.jpg"} title={card.name} onClick={() => {
                             handleOpenModal()
                             setSelectedCard(card)
                         }} />
@@ -91,8 +92,8 @@ const ChildrenAmmenitiesList = () => {
             </Grid>
 
             <FloatingCard
-                title={selectedCard.title}
-                description={selectedCard.description}
+                title={selectedCard.name}
+                description={`Esta es una propiedad de tipo '${selectedCard.name}'`}
                 open={openModal}
                 setOpen={setOpenModal}
                 handleOpen={handleOpenModal}

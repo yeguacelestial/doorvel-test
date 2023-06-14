@@ -32,7 +32,7 @@ const apiResponse = {
 }
 
 const ParentAmmenitiesDropdown = () => {
-    const [selectedParent, setSelectedParent] = useState('');
+    const [selectedParent, setSelectedParent] = useState({ id: 1, name: "Estilo de vida" });
     const [apiData, setApiData] = useState()
 
     const { ammenitiesOptions, setAmmenitiesOptions } = useContext(AmmenitiesContext)
