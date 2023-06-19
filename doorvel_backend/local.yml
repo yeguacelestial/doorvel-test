@@ -1,4 +1,4 @@
-version: '3'
+version: "3"
 
 volumes:
   doorvel_backend_local_mysql_data: {}
@@ -11,7 +11,7 @@ services:
       dockerfile: ./compose/local/django/Dockerfile
     image: doorvel_backend_local_django
     container_name: doorvel_backend_local_django
-    platform: linux/x86_64
+    #platform: linux/x86_64
     depends_on:
       - mysql
     volumes:
@@ -37,7 +37,7 @@ services:
   docs:
     image: doorvel_backend_local_docs
     container_name: doorvel_backend_local_docs
-    platform: linux/x86_64
+    #platform: linux/x86_64
     build:
       context: .
       dockerfile: ./compose/local/docs/Dockerfile
