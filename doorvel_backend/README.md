@@ -52,3 +52,9 @@ The following details how to deploy this application.
 ### Docker
 
 See detailed [cookiecutter-django Docker documentation](http://cookiecutter-django.readthedocs.io/en/latest/deployment-with-docker.html).
+
+
+## Solving the problem
+
+- [x] Averigüar como funciona el API
+- [ ] Crear el comando "python manage.py download_postal_codes"
