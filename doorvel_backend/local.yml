@@ -1,0 +1,52 @@
+version: '3'
+
+volumes:
+  doorvel_backend_local_mysql_data: {}
+  doorvel_backend_local_mysql_data_backups: {}
+
+services:
+  django:
+    build:
+      context: .
+      dockerfile: ./compose/local/django/Dockerfile
+    image: doorvel_backend_local_django
+    container_name: doorvel_backend_local_django
+    platform: linux/x86_64
+    depends_on:
+      - mysql
+    volumes:
+      - .:/app:z
+    env_file:
+      - ./.envs/.local/.django
+      - ./.envs/.local/.mysql
+    ports:
+      - "8000:8000"
+    command: /start
+  mysql:
+    build:
+      context: .
+      dockerfile: ./compose/production/mysql/Dockerfile
+    image: doorvel_backend_production_mysql
+    container_name: mysql
+    volumes:
+      - doorvel_backend_local_mysql_data:/var/lib/mysql:z
+      - doorvel_backend_local_mysql_data_backups:/backups:z
+    env_file:
+      - ./.envs/.local/.mysql
+
+  docs:
+    image: doorvel_backend_local_docs
+    container_name: doorvel_backend_local_docs
+    platform: linux/x86_64
+    build:
+      context: .
+      dockerfile: ./compose/local/docs/Dockerfile
+    env_file:
+      - ./.envs/.local/.django
+    volumes:
+      - ./docs:/docs:z
+      - ./config:/app/config:z
+      - ./doorvel_backend:/app/doorvel_backend:z
+    ports:
+      - "9000:9000"
+    command: /start-docs
