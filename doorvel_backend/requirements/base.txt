@@ -18,3 +18,4 @@ django-compressor==4.1  # https://github.com/django-compressor/django-compressor
 django-redis==5.2.0  # https://github.com/jazzband/django-redis
 requests==2.31.0
 pandas==2.0.2
+djangorestframework==3.14.0
