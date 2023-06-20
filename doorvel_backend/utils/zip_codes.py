@@ -5,6 +5,8 @@ from contextlib import closing
 import pandas
 import requests
 
+from core.models import FederalEntity, SettlementType, Settlement, Municipality, ZipCode
+
 
 def filter_zip_codes(zip_code: str):
     headers = {
@@ -65,22 +67,27 @@ def filter_zip_codes(zip_code: str):
     print(f"[*] Filter records with zip code {zip_code}")
     filtered_df = df[df["d_codigo"].values == zip_code]
 
-    # Iterate and create ZipĆode instances
-    # for index, row in df.iterrows():
-    #     zip_code = row["d_codigo"]
-    #     locality = row["d_ciudad"]
-
-    #     federal_entity_key = int(row["c_tipo_asenta"])  # int
-    #     federal_entity_name = row["d_estado"]
-    #     federal_entity_code = row["c_estado"]
-
-    #     settlement_key = int(row["id_asenta_cpcons"])  # key
-    #     settlement_name = row["d_asenta"]
-    #     settlement_zone_type = row["d_zona"]
-
-    #     settlement_type_name = row["d_tipo_asenta"]
-
-    #     municipality_key = row["c_mnpio"]
-    #     municipality_name = row["D_mnpio"]
+    print(filtered_df.to_string())
 
     return filtered_df
+
+
+def create_instance_from_df(dataframe):
+    # Iterate and create ZipĆode instances
+    for index, row in dataframe.iterrows():
+        # TODO: Create model objects
+        zip_code = row["d_codigo"]
+        locality = row["d_ciudad"]
+
+        federal_entity_key = int(row["c_tipo_asenta"])  # int
+        federal_entity_name = row["d_estado"]
+        federal_entity_code = row["c_estado"]
+
+        settlement_key = int(row["id_asenta_cpcons"])  # key
+        settlement_name = row["d_asenta"]
+        settlement_zone_type = row["d_zona"]
+
+        settlement_type_name = row["d_tipo_asenta"]
+
+        municipality_key = row["c_mnpio"]
+        municipality_name = row["D_mnpio"]
