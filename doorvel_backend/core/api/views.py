@@ -1,18 +1,25 @@
-from rest_framework.viewsets import ViewSet
+from rest_framework import viewsets
 from rest_framework.response import Response
+from core.models import ZipCode
+from core.api.serializers import ZipCodeSerializer
 
 from doorvel_backend.utils.zip_codes import filter_zip_codes
 
 import pandas as pd
 
 
-class ZipCodeViewSet(ViewSet):
+class ZipCodeViewSet(viewsets.ReadOnlyModelViewSet):
+    queryset = ZipCode.objects.all()
+    serializer_class = ZipCodeSerializer
+
     def retrieve(self, request, pk=None):
         zip_code = pk
         dataframe = filter_zip_codes(zip_code)
 
-        # TODO: Return response formatted
-        return Response(dataframe)
+        return Response(dataframe.to_dict(orient="records"))
+        # serializer = self.get_serializer(instance)
+        # return Response(serializer.data)
+
 
 zip_code_view = ZipCodeViewSet.as_view({"get": "retrieve"})
 
@@ -34,4 +41,3 @@ zip_code_view = ZipCodeViewSet.as_view({"get": "retrieve"})
 
 #         municipality_key = row["c_mnpio"]
 #         municipality_name = row["D_mnpio"]
-
