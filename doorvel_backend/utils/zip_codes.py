@@ -72,22 +72,46 @@ def filter_zip_codes(zip_code: str):
     return filtered_df
 
 
-def create_instance_from_df(dataframe):
+def create_instance_from_df(zip_code, dataframe):
     # Iterate and create ZipĆode instances
     for index, row in dataframe.iterrows():
-        # TODO: Create model objects
         zip_code = row["d_codigo"]
         locality = row["d_ciudad"]
 
         federal_entity_key = int(row["c_tipo_asenta"])  # int
         federal_entity_name = row["d_estado"]
         federal_entity_code = row["c_estado"]
-
-        settlement_key = int(row["id_asenta_cpcons"])  # key
-        settlement_name = row["d_asenta"]
-        settlement_zone_type = row["d_zona"]
+        federal_entity = FederalEntity.objects.get_or_create(
+            key=federal_entity_key, name=federal_entity_name, code=federal_entity_code
+        )[0]
 
         settlement_type_name = row["d_tipo_asenta"]
+        settlement_type = SettlementType.objects.get_or_create(
+            name=settlement_type_name
+        )[0]
+
+        settlement_key = int(row["id_asenta_cpcons"])  # int
+        settlement_name = row["d_asenta"]
+        settlement_zone_type = row["d_zona"]
+        settlements = Settlement.objects.get_or_create(
+            key=settlement_key,
+            name=settlement_name,
+            zone_type=settlement_zone_type,
+            _type=settlement_type,
+        )
 
         municipality_key = row["c_mnpio"]
         municipality_name = row["D_mnpio"]
+        municipality = Municipality.objects.get_or_create(
+            key=municipality_key, name=municipality_name
+        )[0]
+
+        ZipCode.objects.get_or_create(
+            zip_code=zip_code,
+            locality=locality,
+            federal_entity=federal_entity,
+            # settlements=Settlement.objects.filter(key=settlement_key)[0],
+            municipality=municipality,
+        )
+
+    return ZipCode.objects.filter(zip_code=zip_code).first()
